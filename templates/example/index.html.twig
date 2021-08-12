@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TestController!{% endblock %}
+{% block styles %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('datatables') }}
+{% endblock %}
+
+{% block title %}{% endblock %}
 
 {% block body %}
     <!-- Content Row -->
@@ -800,4 +805,20 @@
         </tr>
         </tfoot>
     </table>
+
+
+    {% block javascript %}
+        {{ encore_entry_script_tags('datatables') }}
+        {{ encore_entry_script_tags('chart') }}
+
+        <script>
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    retrieve: true,
+                    language: datatableTranslation
+                });
+            });
+        </script>
+    {% endblock %}
+
 {% endblock %}
