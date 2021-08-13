@@ -11,21 +11,28 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
-    private RoleHierarchyInterface $roleHierarchy;
-
-    public function __construct(RoleHierarchyInterface $roleHierarchy)
-    {
-        $this->roleHierarchy = $roleHierarchy;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if(in_array('ROLE_SUPER_ADMIN', $options['role']))
+            $auth = [
+                'Super Amministratore' => 'ROLE_SUPER_ADMIN',
+                'Amministratore' => 'ROLE_ADMIN',
+                'Utente Standard' => 'ROLE_ACCOUNT'
+            ];
+        elseif (in_array('ROLE_ADMIN', $options['role']))
+            $auth = [
+                'Amministratore' => 'ROLE_ADMIN',
+                'Utente Standard' => 'ROLE_ACCOUNT'
+            ];
+        else
+            $auth = [];
+
         $builder
             ->add('firstName', TextType::class, [
                 'label' => 'Nome'
@@ -52,9 +59,7 @@ class UserType extends AbstractType
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'Super Amministratore' => 'ROLE_SUPER_ADMIN',
-                    'Amministratore' => 'ROLE_ADMIN',
-                    'Utente Standard' => 'ROLE_USER'
+                    $auth
                 ],
                 'label' => 'Permessi utente',
                 'expanded' => true,
@@ -73,7 +78,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'roles' => ['ROLE_USER'],
+            'role' => ['ROLE_USER'],
         ]);
     }
 }

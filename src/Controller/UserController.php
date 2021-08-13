@@ -26,6 +26,8 @@ class UserController extends AbstractController
         $users = $userRepository->findAll();
 
         return $this->render('user/index.html.twig', [
+            'title' => 'Lista utenti',
+            'description' => 'Gestisci gli utenti',
             'users' => $users,
         ]);
     }
@@ -37,7 +39,7 @@ class UserController extends AbstractController
     {
         $user = new User();
 
-        $form = $this->createForm(UserType::class, $user, ['roles' => $this->getUser()->getRoles() ]);
+        $form = $this->createForm(UserType::class, $user, ['role' => $this->getUser()->getRoles() ]);
 
         $form->handleRequest($request);
 
@@ -49,6 +51,8 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/form.html.twig', [
+            'title' => 'Crea un nuovo utente',
+            'description' => 'Inserisci un nuovo utente nel sistema',
             'createUserForm' => $form->createView()
         ]);
     }
@@ -58,7 +62,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, EntityManagerInterface $entityManager, UserInterface $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['role' => $this->getUser()->getRoles() ]);
 
         $form->handleRequest($request);
 
@@ -70,6 +74,8 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/form.html.twig', [
+            'title' => "Modifica utente",
+            'description' => "Modifica i dati dell' utente {$user->getFirstName()} {$user->getLastName()} ",
             'createUserForm' => $form->createView()
         ]);
     }

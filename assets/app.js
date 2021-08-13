@@ -10,6 +10,9 @@ const $ = require('jquery');
 global.$ = $;
 global.jQuery = $;
 
+//Jquery Easing
+require('startbootstrap-sb-admin-2/vendor/jquery-easing/jquery.easing.min');
+
 //Bootstrap
 require('bootstrap');
 
@@ -19,8 +22,8 @@ require('@fortawesome/fontawesome-free/js/all.js');
 
 // Template SBAdmin2
 import './styles/app.scss';
-require('startbootstrap-sb-admin-2/js/sb-admin-2.min');
+require('./js/sidebar');
 
 
 // start the Stimulus application
-// import './bootstrap';
+import './bootstrap';
