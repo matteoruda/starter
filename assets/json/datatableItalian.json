@@ -11,10 +11,10 @@
   "sSearch":         "Cerca:",
   "sZeroRecords":    "La ricerca non ha portato alcun risultato.",
   "oPaginate": {
-    "sFirst":      "<<",
-    "sPrevious":   "<",
-    "sNext":       ">",
-    "sLast":       ">>"
+    "sFirst":      "<i class=\"fas fa-angle-double-left\"></i>",
+    "sPrevious":   "<i class=\"fas fa-chevron-left\"></i>",
+    "sNext":       "<i class=\"fas fa-chevron-right\"></i>",
+    "sLast":       "<i class=\"fas fa-angle-double-right\"></i>"
   },
   "oAria": {
     "sSortAscending":  ": attiva per ordinare la colonna in ordine crescente",

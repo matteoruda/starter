@@ -16,6 +16,7 @@ require('startbootstrap-sb-admin-2/vendor/jquery-easing/jquery.easing.min');
 //Bootstrap
 require('bootstrap');
 
+
 //Fontawesome
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
@@ -23,6 +24,11 @@ require('@fortawesome/fontawesome-free/js/all.js');
 // Template SBAdmin2
 import './styles/app.scss';
 require('./js/sidebar');
+
+//Tooltips
+$(document).tooltip({
+    selector: '[data-toggle="tooltip"]'
+});
 
 
 // start the Stimulus application

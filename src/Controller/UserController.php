@@ -109,7 +109,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Utente cancellato con successo');
+        $this->addFlash('success', 'Utente ripristinato con successo');
         return $this->redirectToRoute('user_list');
     }
 }
