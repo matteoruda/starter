@@ -6,7 +6,9 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/user", name="user_")
+ * @IsGranted("ROLE_ADMIN", message="Non hai i permessi per visualizzare questa pagina")
  */
 class UserController extends AbstractController
 {
@@ -62,7 +65,8 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, EntityManagerInterface $entityManager, UserInterface $user): Response
     {
-        $form = $this->createForm(UserType::class, $user, ['role' => $this->getUser()->getRoles() ]);
+
+        $form = $this->createForm(UserType::class, $user, [ 'role' => $this->getUser()->getRoles() ]);
 
         $form->handleRequest($request);
 
@@ -78,5 +82,34 @@ class UserController extends AbstractController
             'description' => "Modifica i dati dell' utente {$user->getFirstName()} {$user->getLastName()} ",
             'createUserForm' => $form->createView()
         ]);
+    }
+
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function delete(UserInterface $user, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $user->setDeletedAt(new \DateTimeImmutable());
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Utente cancellato con successo');
+        return $this->redirectToRoute('user_list');
+    }
+
+    /**
+     * @Route("/recover/{id}", name="recover")
+     */
+    public function recover(UserInterface $user, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $user->setDeletedAt(null);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Utente cancellato con successo');
+        return $this->redirectToRoute('user_list');
     }
 }

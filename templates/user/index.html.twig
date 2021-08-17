@@ -13,6 +13,7 @@
                         <th>Nome</th>
                         <th>Cognome</th>
                         <th>Email</th>
+                        <th>Stato</th>
                         <th>Azioni</th>
                     </tr>
                 </thead>
@@ -30,11 +31,25 @@
                                 {{ user.email }}
                             </td>
                             <td>
-                                <a href="{{ path('user_edit', {id:user.id}) }}">
-                                    <button class="btn btn-primary">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
+                                {% if user.deletedAt is null %}
+                                    <span class="badge badge-success">attivo</span>
+                                {% else %}
+                                    <span class="badge badge-danger">cancellato</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('user_edit', {id:user.id}) }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Modifica Utente" role="button">
+                                    <i class="fas fa-user-edit"></i>
                                 </a>
+                                {% if user.deletedAt is not null %}
+                                    <a href="{{ path('user_recover', {id:user.id}) }}" class="btn btn-success" role="button" data-toggle="tooltip" data-placement="top" title="Ripristina Utente">
+                                        <i class="fas fa-user-check"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('user_delete', {id:user.id}) }}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancella Utente" role="button">
+                                        <i class="fas fa-user-times"></i>
+                                    </a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -46,7 +61,7 @@
 
 {% endblock %}
 
-    {% block javascript %}
+{% block javascript %}
 
     {{ encore_entry_script_tags('datatables') }}
     {{ encore_entry_script_tags('user_list') }}
