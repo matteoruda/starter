@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    test
+                </div>
+
+                <div class="col">
+                    <div class="row">
+                        <div class="col-md-4  font-weight-bold">Nome: </div>
+                        <div class="col text-left">{{ user.firstName }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4  font-weight-bold">Cognome: </div>
+                        <div class="col text-left">{{ user.lastName }}</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
