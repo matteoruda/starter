@@ -5,15 +5,18 @@
 {% block body %}
     <div class="card shadow mb-4">
 
-        <div class="card-body">
+        <div class="card-body ">
 
             <div class="row">
 
+                <!-- LEFT SIDE -->
                 <div class="col-md-4">
-                    test
+                    profile pic
                 </div>
 
+                <!-- RIGHT SIDE -->
                 <div class="col">
+
                     <div class="row">
                         <div class="col-md-4  font-weight-bold">Nome: </div>
                         <div class="col text-left">{{ user.firstName }}</div>
@@ -22,6 +25,21 @@
                     <div class="row">
                         <div class="col-md-4  font-weight-bold">Cognome: </div>
                         <div class="col text-left">{{ user.lastName }}</div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-lg-8 col-md-12">
+                            <div class="card">
+
+                                <div class="card-body">
+                                    <div class="mb-4 font-weight-bold">
+                                        Cambia password
+                                    </div>
+                                    {{ form_start(passwordForm) }}
+                                    {{ form_end(passwordForm) }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
