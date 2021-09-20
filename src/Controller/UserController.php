@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -38,7 +39,7 @@ class UserController extends AbstractController
     /**
      * @Route("/create", name="create")
      */
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder): Response
     {
         $user = new User();
 
@@ -48,6 +49,9 @@ class UserController extends AbstractController
 
         if(  $form->isSubmitted() && $form->isValid() )
         {
+            $user->setPassword(
+                $passwordEncoder->hashPassword( $user, $form->get('plainPassword')->getData() )
+            );
             $entityManager->persist($user);
             $entityManager->flush();
             $this->redirectToRoute('user_list');
@@ -88,7 +92,7 @@ class UserController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete")
      */
-    public function delete(UserInterface $user, EntityManagerInterface $entityManager): RedirectResponse
+    public function delete(User $user, EntityManagerInterface $entityManager): RedirectResponse
     {
         $user->setDeletedAt(new \DateTimeImmutable());
 
@@ -102,7 +106,7 @@ class UserController extends AbstractController
     /**
      * @Route("/recover/{id}", name="recover")
      */
-    public function recover(UserInterface $user, EntityManagerInterface $entityManager): RedirectResponse
+    public function recover(User $user, EntityManagerInterface $entityManager): RedirectResponse
     {
         $user->setDeletedAt(null);
 
